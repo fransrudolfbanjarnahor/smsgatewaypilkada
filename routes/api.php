@@ -29,9 +29,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/v1/config','ApiController@getConfig');
     Route::get('/v1/lokasitps','ApiController@getTPS');
     Route::get('/v1/peserta','ApiController@getPeserta');
-});
-
-Route::middleware('auth:api')->group(function () {
     Route::get('/v1/test','ApiController@test');
     Route::post('/v1/smsdata','ApiController@smsdata');
 });

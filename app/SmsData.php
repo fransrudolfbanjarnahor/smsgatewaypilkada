@@ -9,6 +9,6 @@ class SmsData extends Model
     protected $table = 'smsdata';
     //
     protected $fillable = [
-        'nomorhp', 'pesan', 'statuspesan', 'nourut', 'jumlah', 'username'
+        'nomorhp', 'pesan', 'statuspesan', 'nourut', 'jumlah', 'state'
     ];
 }

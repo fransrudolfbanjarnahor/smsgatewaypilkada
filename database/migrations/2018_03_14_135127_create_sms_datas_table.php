@@ -19,6 +19,7 @@ class CreateSmsDatasTable extends Migration
             $table->string('pesan')->nullable()->default(null);
             $table->string('statuspesan')->nullable()->default(null);
             $table->boolean('state')->nullable()->default(null);
+            $table->string('tps')->nullable()->default(null);
             $table->integer('nourut')->nullable()->default(null);
             $table->integer('jumlah')->nullable()->default(null);
             $table->string('username')->nullable()->default(null);

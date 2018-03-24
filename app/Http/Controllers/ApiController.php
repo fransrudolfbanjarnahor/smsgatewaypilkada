@@ -10,6 +10,7 @@ use App\Propinsi;
 use App\KabupatenKota;
 use App\Kecamatan;
 use App\LokasiTPS;
+use App\PetugasTPS;
 use App\KelurahanDesa;
 use App\PesertaPemilihan;
 use Illuminate\Support\Facades\Hash;
@@ -18,8 +19,24 @@ use Illuminate\Support\Facades\Auth;
 class ApiController extends Controller
 {
     public function smsdata(Request $request) {
-        $data = SmsData::create($request->all());
-        return response()->json($data, 200);
+        $data = SmsData::where('nomorhp',$request->input('nomorhp'))->where('username',$request->user()->email)->where('tps',$request->input('tps'))->first();
+        if ($data == null) {
+            $data = new SmsData();
+            $data->nomorhp = $request->input('nomorhp');
+            $data->pesan = $request->input('pesan');
+            $data->statuspesan = $request->input('statuspesan');
+            $data->state = $request->input('state');
+            $data->tps = $request->input('tps');
+            $data->nourut = $request->input('nourut');
+            $data->jumlah = $request->input('jumlah');
+            $data->username = $request->user()->email;
+            $data->save();
+        } else {
+            $data->jumlah = $request->input('jumlah');
+            $data->update();
+        }
+        $response = ["status" => "OK"];
+        return response()->json($response, 200);
         
     }
 
@@ -52,17 +69,27 @@ class ApiController extends Controller
             $propinsi = Propinsi::find($config->propinsi)->nama;
         }
         
-        $data = ['propinsi' => $propinsi, 'kabkota'=>$kabkota,'kecamatan'=>$kecamatan,'keldesa'=>$kelurahan];
+        $data = ['propinsi' => $propinsi, 'kabkota'=>$kabkota,'kecamatan'=>($kecamatan==null?'':$kecamatan),'keldesa'=>($kelurahan==null?'':$kelurahan)];
         return response()->json($data, 200);
     }
+
     public function test() {
 
        return "ok " ;
     }
 
     public function getTPS(Request $request) {
-        $tps = LokasiTPS::where('user_id',$request->user()->id)->get();
-        return response()->json($tps, 200);
+        //$tps = PetugasTPS::with('lokasi')->where('user_id',$request->user()->id)->get();
+        $userid = $request->user()->id;
+        $tps = PetugasTPS::whereHas('lokasitps', function($q) use ($userid) {
+            $q->where('user_id', $userid);
+        })->get();
+        $data = [];
+        foreach($tps as $t) {
+            $data[] = ['kode' => $t->lokasitps->kode,'nama' => $t->lokasitps->nama,'lokasi' => $t->lokasitps->lokasi,
+            'petugas'=>$t->nama,'nomorhppetugas'=>$t->nomorhp];
+        }
+        return response()->json($data, 200);
     }
     public function getPeserta(Request $request) {
         $tps = PesertaPemilihan::where('user_id',$request->user()->id)->get();
