@@ -6,7 +6,14 @@
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
    <input type="hidden" name="id" value="{{$data->id}}">
    <div class="form-group">
-      <label>Nomor Urut / Inisial Pasangan Calon</label>
+      <div class="row">
+          <div class="col">
+              <label>Nomor Urut </label>
+          </div>
+          <div class="col">
+              <label>Inisial Pasangan Calon </label>
+          </div>
+      </div>   
       <div class="row">
           <div class="col">
             <input type="text" class="form-control" id="nourut"  name="nourut" value="{{$data->nourut}}">
@@ -49,6 +56,7 @@
 
   {!! Form::submit('Simpan');!!}
   {!! Form::close() !!}
+  @include('inc.messages')
 </div>
 @endsection
 

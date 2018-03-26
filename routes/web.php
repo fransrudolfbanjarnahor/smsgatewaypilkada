@@ -29,6 +29,7 @@ Route::post('/data/lokasitps/filter', 'LokasiTPSController@filter');
 Route::resources([
     '/data/lokasitps'=>'LokasiTPSController',
     '/data/pesertapemilihan'=>'PesertaPemilihanController',
+    '/data/sms'=>'SmsDataController',
      'configapp'=>'ConfigAppController',
  ]);
 

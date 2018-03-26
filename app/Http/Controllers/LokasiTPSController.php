@@ -174,6 +174,10 @@ class LokasiTPSController extends Controller
      */
     public function store(Request $request)
     {
+
+     
+
+
         $message = "store ";
         if ($request->hasFile('tps')) {
             $filenameext =  $request->file('tps')->getClientOriginalName();
@@ -209,30 +213,36 @@ class LokasiTPSController extends Controller
     
     public function export(Request $request)
     {
-        $keldes = KelurahanDesa::find($request->input('kelurahandesa'))  ;
-        $kec = $keldes->kecamatan->nama;
-        $kabkota = $keldes->kecamatan->kabupatenkota->nama;
-        $propinsi = $keldes->kecamatan->kabupatenkota->propinsi->nama;
-        $export = []; 
-        for ($i=1;$i<11;$i++) {
-            $data = array('KODE TPS' => '','NAMA TPS' => '','LOKASI TPS' => '','IDKELDESA'=>$keldes->id,'KELURAHAN/DESA'=>$keldes->nama,
-                      'KECAMATAN'=>$kec,'KABUPATEN/KOTA'=>$kabkota,'PROPINSI'=>$propinsi);
-            $export[] = $data;
-        }
 
-        $data =  json_encode($export);
-        return Excel::create($keldes->kode . '-' . $keldes->nama, function($excel) use ($export) {
-            $excel->setTitle('Lokasi TPS');
-            $excel->setCreator(Auth::user()->name)
-                  ->setCompany('SMS GATEWAY PILKADA');
+        $this->validate($request,[
+            'kelurahandesa' => 'required|integer|min:1|digits_between: 1,6',
+        ]);
+        //    dd($request->input('kelurahandesa'));
+        // $keldes = KelurahanDesa::find($request->input('kelurahandesa'))  ;
+
+        // $kec = $keldes->kecamatan->nama;
+        // $kabkota = $keldes->kecamatan->kabupatenkota->nama;
+        // $propinsi = $keldes->kecamatan->kabupatenkota->propinsi->nama;
+        // $export = []; 
+        // for ($i=1;$i<11;$i++) {
+        //     $data = array('KODE TPS' => '','NAMA TPS' => '','LOKASI TPS' => '','IDKELDESA'=>$keldes->id,'KELURAHAN/DESA'=>$keldes->nama,
+        //               'KECAMATAN'=>$kec,'KABUPATEN/KOTA'=>$kabkota,'PROPINSI'=>$propinsi);
+        //     $export[] = $data;
+        // }
+
+        // $data =  json_encode($export);
+        // return Excel::create($keldes->kode . '-' . $keldes->nama, function($excel) use ($export) {
+        //     $excel->setTitle('Lokasi TPS');
+        //     $excel->setCreator(Auth::user()->name)
+        //           ->setCompany('SMS GATEWAY PILKADA');
      
-            $excel->setDescription('Template File untuk upload lokasi TPS');
-            $excel->sheet('LokasiTPS', function($sheet) use ($export)
-	        {
-				$sheet->fromArray($export);
-	        });
+        //     $excel->setDescription('Template File untuk upload lokasi TPS');
+        //     $excel->sheet('LokasiTPS', function($sheet) use ($export)
+	    //     {
+		// 		$sheet->fromArray($export);
+	    //     });
         
-        })->download('xlsx');
+        // })->download('xlsx');
     }
     /**
      * Display the specified resource.

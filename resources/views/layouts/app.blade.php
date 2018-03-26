@@ -50,6 +50,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/data/lokasitps">Lokasi TPS</a>
                                 <a class="dropdown-item" href="/data/pesertapemilihan">Bakal Calon</a>
+                                <a class="dropdown-item" href="/data/sms">Data  SMS</a>
                             </div>
                             
                         </li>

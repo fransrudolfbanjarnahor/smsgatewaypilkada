@@ -12,7 +12,6 @@
   {!! Form::submit('Upload');!!}
   {!! Form::close() !!}
 </div>
-<hr />
 <div class="info">
 @if (session('message'))
   {{session(message)}}
@@ -55,7 +54,8 @@
       </div>
     </div>
   </form>
-
+  <div class="card">
+    <div class="card-body">
     <table class="table">
     <tr>
       <th>KODE</th>
@@ -63,6 +63,7 @@
       <th>LOKASI</th>
       <th>WILAYAH</th>
       <th>OPERATOR</th>
+      <th>Aksi</th>
     </tr>
   @foreach ($lokasitps as $row)
     <tr>
@@ -78,12 +79,17 @@
       @else
       <td>
           {{$row->petugastps->nama . ' - ' . $row->petugastps->nomorhp}} 
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#petugasmodal" data-tps="" data-idtps="{{$row->id}}" data-petugas="{{$row->petugastps}}">Edit</button>
       </td>
+      <td>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#petugasmodal" data-tps="" data-idtps="{{$row->id}}" data-petugas="{{$row->petugastps}}">Edit</button>
+    </td>
       @endif
     </tr>
   @endforeach
   </table>
+    </div>
+  </div>
+
 </div>
 
 <div class="modal fade" id="petugasmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
