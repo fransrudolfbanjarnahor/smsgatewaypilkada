@@ -15,7 +15,7 @@ use App\KelurahanDesa;
 use App\PesertaPemilihan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-    
+use DB;   
 class ApiController extends Controller
 {
     public function smsdata(Request $request) {
@@ -38,6 +38,29 @@ class ApiController extends Controller
         $response = ["status" => "OK"];
         return response()->json($response, 200);
         
+    }
+    
+    public function petugas(Request $request) {
+       
+        $petugas = PetugasTPS::where('nomorhp',$request->input('nomorhp'))->where('lokasitps_id',$request->input('tps_id'))->first();
+      
+        if ($petugas == null) {
+            $petugas = new PetugasTPS();
+            $petugas->nomorhp = $request->input('nomorhp');
+            $petugas->nama = $request->input('petugas');
+            $petugas->lokasitps_id = $request->input('tps_id');
+           
+            $petugas->save();
+           
+        }else {
+            $petugas->nomorhp = $request->input('nomorhp');
+            $petugas->nama = $request->input('petugas');
+            $petugas->lokasitps_id = $request->input('tps_id');
+            $petugas->update();
+        }
+
+        $response = ["status" => "OK"];
+        return response()->json($response, 200);
     }
 
     public function getConfig(Request $request) {
@@ -81,13 +104,19 @@ class ApiController extends Controller
     public function getTPS(Request $request) {
         //$tps = PetugasTPS::with('lokasi')->where('user_id',$request->user()->id)->get();
         $userid = $request->user()->id;
-        $tps = PetugasTPS::whereHas('lokasitps', function($q) use ($userid) {
-            $q->where('user_id', $userid);
-        })->get();
+        // $tps = PetugasTPS::whereHas('lokasitps', function($q) use ($userid) {
+        //     $q->where('user_id', $userid);
+        // })->get();
+        $tps = DB::table('lokasitps')
+            ->leftJoin('petugastps', 'lokasitps.id', '=', 'petugastps.lokasitps_id')
+            ->where('user_id', $userid)
+            ->select('lokasitps.*','petugastps.nama as petugas','petugastps.nomorhp')
+            ->get();
+       // dd($tps[0]);
         $data = [];
         foreach($tps as $t) {
-            $data[] = ['kode' => $t->lokasitps->kode,'nama' => $t->lokasitps->nama,'lokasi' => $t->lokasitps->lokasi,
-            'petugas'=>$t->nama,'nomorhppetugas'=>$t->nomorhp];
+            $data[] = ['kode' => $t->kode,'nama' => $t->nama,'lokasi' => $t->lokasi,
+            'petugas'=>$t->petugas,'nomorhppetugas'=>$t->nomorhp];
         }
         return response()->json($data, 200);
     }

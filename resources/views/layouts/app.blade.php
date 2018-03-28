@@ -12,10 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
-
-
-
+    @yield('style')
 </head>
 <body>
     <div id="app">
@@ -36,12 +33,12 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
+                        
                         @guest
-                            <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+                            <li><a class="nav-link" href="{{ route('login') }}">Masuk</a></li>
+                            <li><a class="nav-link" href="{{ route('register') }}">Daftar</a></li>
                         @else
-                            
+                        <li><a class="nav-link" href="/hasil">Hasil</a></li>    
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Data <span class="caret"></span>
@@ -73,6 +70,7 @@
                                     </form>
                                 </div>
                             </li>
+                           
                         @endguest
                     </ul>
                 </div>

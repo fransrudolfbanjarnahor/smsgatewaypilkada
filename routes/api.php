@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/v1/peserta','ApiController@getPeserta');
     Route::get('/v1/test','ApiController@test');
     Route::post('/v1/smsdata','ApiController@smsdata');
+    Route::post('/v1/petugas','ApiController@petugas');
 });
 
 // Route::post('/v1/smsdata','ApiController@smsdata')->middleware('client_credentials');

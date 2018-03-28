@@ -3,7 +3,7 @@
 <div class="container">
     <h1>Template Import Lokasi TPS Per wilayah terkecil (Kelurahan/Desa)</h1>
    {!! Form::open(['action' => 'LokasiTPSController@export','files'=>'true']) !!}
-   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+  
    <div class="form-group">
     <label>Propinsi</label>
        <h4>{{$propinsi->nama}}</h4>
@@ -35,6 +35,11 @@
         </select>
   </div>
 
+  @if ($errors->has('kelurahandesa'))
+  <div class="alert alert-warning" role="alert">
+      Template hanya dapat dilakukan sampai level Kelurahan / Desa
+  </div>
+  @endif
   {!! Form::submit('Buat Template') !!}
   {!! Form::close() !!}
 </div>

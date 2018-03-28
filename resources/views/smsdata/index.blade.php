@@ -2,7 +2,25 @@
 
 @section('content')
 <div class="container">
-  <h1>SMS DATA</h1>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <h3>SMS DATA</h3>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+              <select class="form-control input-sm" name="filtersms" id="filtersms">
+                <option value="0">Semua</option>
+                <option value="1">Valid</option>
+                <option value="-1">In Valid</option>
+              </select>
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Filter</button>
+          </form>
+        </div>
+      </nav>
   <form action="/data/lokasitps/filter" method="POST" id="formfilter">
   </form>
   <div class="card">

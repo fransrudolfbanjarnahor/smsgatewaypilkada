@@ -25,6 +25,7 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::post('/data/lokasitps/export', 'LokasiTPSController@export');
 Route::post('/data/lokasitps/petugas', 'LokasiTPSController@setPetugas');
 Route::post('/data/lokasitps/filter', 'LokasiTPSController@filter');
+Route::get('/hasil', 'HasilController@index');
 
 Route::resources([
     '/data/lokasitps'=>'LokasiTPSController',

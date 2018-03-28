@@ -2,10 +2,13 @@
 
 @section('content')
 <div class="container">
+   
    {!! Form::open(['action' => 'PesertaPemilihanController@store','files'=>'true']) !!}
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
    <input type="hidden" name="id" value="{{$data->id}}">
+   
    <div class="form-group">
+       
       <div class="row">
           <div class="col">
               <label>Nomor Urut </label>
@@ -56,7 +59,7 @@
 
   {!! Form::submit('Simpan');!!}
   {!! Form::close() !!}
-  @include('inc.messages')
+ 
 </div>
 @endsection
 
