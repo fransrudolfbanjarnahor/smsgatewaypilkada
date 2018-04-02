@@ -50,6 +50,7 @@ class ConfigAppController extends Controller
         $config = ConfigApp::where('user_id',Auth::user()->id)->first();
         if ($config == null) {
             $config = new ConfigApp();
+            $config->untukpemilihan = $request->input('untukpemilihan');
             $config->propinsi = $request->input('propinsi');
             $config->kabupatenkota = $request->input('kabupatenkota');
             $config->kecamatan = $request->input('kecamatan');
@@ -57,6 +58,7 @@ class ConfigAppController extends Controller
             $config->user_id = Auth::user()->id;
             $config->save();
         } else {
+            $config->untukpemilihan = $request->input('untukpemilihan');
             $config->propinsi = $request->input('propinsi');
             $config->kabupatenkota = $request->input('kabupatenkota');
             $config->kecamatan = $request->input('kecamatan');

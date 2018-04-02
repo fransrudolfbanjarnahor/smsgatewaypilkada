@@ -18,7 +18,9 @@
                 <option value="-1">In Valid</option>
               </select>
               <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Filter</button>
+             
           </form>
+          <a class="btn btn-outline-success my-2 my-sm-0" type="menu" href="/data/sms/confirm">Kosongkan SMS Data</a>
         </div>
       </nav>
   <form action="/data/lokasitps/filter" method="POST" id="formfilter">

@@ -19,6 +19,7 @@ class CreateConfigAppsTable extends Migration
             $table->integer('kabupatenkota')->nullable()->default(null);
             $table->integer('kecamatan')->nullable()->default(null);
             $table->integer('kelurahandesa')->nullable()->default(null);
+            $table->string('untukpemilihan')->nullable()->default(null);
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

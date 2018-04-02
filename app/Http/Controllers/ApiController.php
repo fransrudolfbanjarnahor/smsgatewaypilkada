@@ -19,8 +19,27 @@ use DB;
 class ApiController extends Controller
 {
     public function smsdata(Request $request) {
-        $data = SmsData::where('nomorhp',$request->input('nomorhp'))->where('username',$request->user()->email)->where('tps',$request->input('tps'))->first();
-        if ($data == null) {
+        if ($request->input('tps') > 0 && $request->input('nourut') > 0) {
+            $data = SmsData::where('nomorhp',$request->input('nomorhp'))->where('username',$request->user()->email)
+            ->where('tps',$request->input('tps'))
+            ->where('nourut',$request->input('nourut'))->first();
+            if ($data == null) {
+                $data = new SmsData();
+                $data->nomorhp = $request->input('nomorhp');
+                $data->pesan = $request->input('pesan');
+                $data->statuspesan = $request->input('statuspesan');
+                $data->state = $request->input('state');
+                $data->tps = $request->input('tps');
+                $data->nourut = $request->input('nourut');
+                $data->jumlah = $request->input('jumlah');
+                $data->username = $request->user()->email;
+                $data->save();
+            } else {
+                $data->pesan =  $data->pesan ."|".$request->input('pesan');
+                $data->jumlah = $request->input('jumlah');
+                $data->update();
+            }
+        }else {
             $data = new SmsData();
             $data->nomorhp = $request->input('nomorhp');
             $data->pesan = $request->input('pesan');
@@ -30,36 +49,42 @@ class ApiController extends Controller
             $data->nourut = $request->input('nourut');
             $data->jumlah = $request->input('jumlah');
             $data->username = $request->user()->email;
-            $data->save();
-        } else {
-            $data->jumlah = $request->input('jumlah');
-            $data->update();
+            $data->save(); 
         }
         $response = ["status" => "OK"];
         return response()->json($response, 200);
         
     }
-    
+    public function getSms(Request $request) {
+        $data = SmsData::where('username',$request->user()->email)->where('state',1)->get();
+        return response()->json($data, 200);
+    }
     public function petugas(Request $request) {
-       
-        $petugas = PetugasTPS::where('nomorhp',$request->input('nomorhp'))->where('lokasitps_id',$request->input('tps_id'))->first();
-      
-        if ($petugas == null) {
-            $petugas = new PetugasTPS();
-            $petugas->nomorhp = $request->input('nomorhp');
-            $petugas->nama = $request->input('petugas');
-            $petugas->lokasitps_id = $request->input('tps_id');
-           
-            $petugas->save();
-           
-        }else {
-            $petugas->nomorhp = $request->input('nomorhp');
-            $petugas->nama = $request->input('petugas');
-            $petugas->lokasitps_id = $request->input('tps_id');
-            $petugas->update();
+        $lokasitps = LokasiTPS::where('id',$request->input('tps_id'))->first();
+        // $petugas = PetugasTPS::where('nomorhp',$request->input('nomorhp'))->first();
+        $message = "";
+        if ($lokasitps != null) {
+            if ($lokasitps->petugastps == null) {
+                $petugas = new PetugasTPS();
+                $petugas->nomorhp = $request->input('nomorhp');
+                $petugas->nama = $request->input('petugas');
+                $petugas->lokasitps_id = $request->input('tps_id');
+                $message = "save " . $request->input('nomorhp') . " " . $request->input('tps_id');
+                $petugas->save();
+            }else{
+                $petugas = $lokasitps->petugastps;
+                $petugas->nomorhp = $request->input('nomorhp');
+                $petugas->nama = $request->input('petugas');
+                $petugas->lokasitps_id = $request->input('tps_id');
+                $message = "update " . $request->input('nomorhp') . " " . $request->input('tps_id');
+                $petugas->update();
+            }
+            $response = ["status" => "OK", "message"=>$message];
+        } else {
+            $message = "TPS NOT FOUND";
+            $response = ["status" => "FAIL", "message"=>$message];
         }
-
-        $response = ["status" => "OK"];
+        
         return response()->json($response, 200);
     }
 
@@ -92,7 +117,7 @@ class ApiController extends Controller
             $propinsi = Propinsi::find($config->propinsi)->nama;
         }
         
-        $data = ['propinsi' => $propinsi, 'kabkota'=>$kabkota,'kecamatan'=>($kecamatan==null?'':$kecamatan),'keldesa'=>($kelurahan==null?'':$kelurahan)];
+        $data = ['propinsi' => $propinsi, 'kabkota'=>$kabkota,'kecamatan'=>($kecamatan==null?'':$kecamatan),'keldesa'=>($kelurahan==null?'':$kelurahan),'untukpemilihan' => $config->untukpemilihan];
         return response()->json($data, 200);
     }
 
@@ -115,7 +140,7 @@ class ApiController extends Controller
        // dd($tps[0]);
         $data = [];
         foreach($tps as $t) {
-            $data[] = ['kode' => $t->kode,'nama' => $t->nama,'lokasi' => $t->lokasi,
+            $data[] = ['id' => $t->id,'kode' => $t->kode,'nama' => $t->nama,'lokasi' => $t->lokasi,
             'petugas'=>$t->petugas,'nomorhppetugas'=>$t->nomorhp];
         }
         return response()->json($data, 200);

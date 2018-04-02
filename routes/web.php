@@ -26,11 +26,14 @@ Route::post('/data/lokasitps/export', 'LokasiTPSController@export');
 Route::post('/data/lokasitps/petugas', 'LokasiTPSController@setPetugas');
 Route::post('/data/lokasitps/filter', 'LokasiTPSController@filter');
 Route::get('/hasil', 'HasilController@index');
+Route::get('/perhitungan', 'HasilController@getHasil');
+Route::get('/data/sms/confirm', 'SmsDataController@confirm');
+Route::get('/data/sms/destroy', 'SmsDataController@destroy');
+Route::get('/data/sms/index', 'SmsDataController@index');
 
 Route::resources([
     '/data/lokasitps'=>'LokasiTPSController',
     '/data/pesertapemilihan'=>'PesertaPemilihanController',
-    '/data/sms'=>'SmsDataController',
      'configapp'=>'ConfigAppController',
  ]);
 

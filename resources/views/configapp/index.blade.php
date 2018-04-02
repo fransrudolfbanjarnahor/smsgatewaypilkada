@@ -6,8 +6,15 @@
     
    {!! Form::open(['action' => 'ConfigAppController@store']) !!}
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
    <div class="form-group">
-   <label>Propinsi</label>
+    <label>Untuk Pemilihan</label>
+         <input type="text" class="form-control input-sm" name="untukpemilihan" id="untukpemilihan" value="{{ $config->untukpemilihan }}" />
+    </div>
+
+
+   <div class="form-group">
+  <label>Propinsi</label>
         <select class="form-control input-sm" name="propinsi" id="propinsi">
         </select>
   </div>

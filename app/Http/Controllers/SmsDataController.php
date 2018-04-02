@@ -21,4 +21,17 @@ class SmsDataController extends Controller
         }
         return view("smsdata.index")->with('data',$data); 
     }
+
+    public function confirm()
+    {
+        return view("smsdata.confirm"); 
+    }
+
+    public function destroy(Request $req)
+    {
+        if ($req->input('confirm')) {
+          SMSData::truncate();   
+        }
+        return redirect()->action('SmsDataController@index');
+    }
 }
